@@ -1,0 +1,44 @@
+{
+  "users_count": 1000,
+  "products_count": 500,
+  "ratings_count": 4975,
+  "interactions_count": 18178,
+  "countries": {
+    "Jordan": 157,
+    "UAE": 150,
+    "Egypt": 148,
+    "Morocco": 143,
+    "Saudi Arabia": 139,
+    "Kuwait": 133,
+    "Qatar": 130
+  },
+  "categories": {
+    "Sports": 79,
+    "Perfumes": 75,
+    "Home Appliances": 74,
+    "Books": 73,
+    "Toys": 69,
+    "Electronics": 68,
+    "Clothes": 62
+  },
+  "price_min": 20.0,
+  "price_max": 1994.0,
+  "price_mean": 982.49,
+  "clicked_without_viewed": 1187,
+  "purchased_without_clicked": 1776,
+  "evaluation_metrics": {
+    "evaluation_users": 300,
+    "baseline_recall_at_10": 0.0167,
+    "ga_recall_at_10": 0.02,
+    "baseline_ndcg_at_10": 0.0078,
+    "ga_ndcg_at_10": 0.0088,
+    "baseline_diversity_at_10": 0.516,
+    "ga_diversity_at_10": 0.594
+  },
+  "paper": {
+    "title": "E-commerce recommender system based on improved K-means commodity information management model",
+    "authors": "Wei Zhang, Zonghua Wu",
+    "journal": "Heliyon (2024)",
+    "doi": "https://doi.org/10.1016/j.heliyon.2024.e29045"
+  }
+}

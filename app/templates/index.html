@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero-card hero-home">
+  <div class="hero-text">
+    <span class="eyebrow">BIA601</span>
+    <h1>تحسين التوصيات في المتاجر الإلكترونية باستخدام الخوارزمية الجينية</h1>
+    <p class="lead">
+      يعرض هذا التطبيق توصيات نهائية للمستخدم بالاعتماد على بيانات المستخدمين والمنتجات والتقييمات
+      والسلوك، ثم يحسن ترتيب القائمة النهائية بالخوارزمية الجينية.
+    </p>
+  </div>
+
+  <form action="/recommendations" method="get" class="selector-box">
+    <label for="user_id">اختر رقم المستخدم</label>
+    <div class="selector-row">
+      <input type="number" id="user_id" name="user_id" value="{{ featured_user }}" min="1" max="{{ summary.users_count }}">
+      <button type="submit" class="btn">عرض التوصيات</button>
+    </div>
+    <small>النطاق المتاح من 1 إلى {{ summary.users_count }}</small>
+  </form>
+</section>
+
+<section class="stats-grid">
+  {% for item in metric_cards %}
+  <article class="stat-card">
+    <small>{{ item.label }}</small>
+    <strong>{{ item.value }}</strong>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="panel-grid two-columns">
+  <article class="panel">
+    <span class="eyebrow">فكرة المشروع</span>
+    <h2>ما الذي يقدمه التطبيق؟</h2>
+    <ul class="clean-list">
+      <li>اختيار المستخدم ثم عرض أفضل المنتجات المقترحة له.</li>
+      <li>إظهار الفئة والسعر وسبب مختصر لكل توصية.</li>
+      <li>تطبيق فعلي للخوارزمية الجينية داخل نظام التوصيات.</li>
+    </ul>
+  </article>
+
+  <article class="panel">
+    <span class="eyebrow">نتائج مختصرة</span>
+    <h2>مقارنة قبل التحسين وبعده</h2>
+    <div class="metric-stack">
+      {% for item in result_cards %}
+      <div class="metric-item">
+        <div class="metric-topline">
+          <strong>{{ item.label }}</strong>
+          <span>+{{ item.delta_pct }}%</span>
+        </div>
+        <div class="metric-row">
+          <small>قبل التحسين</small>
+          <b>{{ item.baseline }}</b>
+        </div>
+        <div class="bar"><span style="width: {{ item.baseline_pct }}%"></span></div>
+        <div class="metric-row">
+          <small>بعد التحسين</small>
+          <b>{{ item.enhanced }}</b>
+        </div>
+        <div class="bar strong"><span style="width: {{ item.enhanced_pct }}%"></span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">عينة التوصيات</span>
+      <h2>مثال سريع من القائمة النهائية</h2>
+    </div>
+    <a class="text-link" href="/recommendations?user_id={{ featured_user }}">فتح صفحة التوصيات</a>
+  </div>
+
+  <div class="preview-grid">
+    {% for card in preview_cards %}
+    <article class="preview-card">
+      <div class="preview-main">
+        <div class="preview-tags">
+          <span class="category-badge">{{ card.category }}</span>
+        </div>
+        <h3>المنتج {{ card.product_id }}</h3>
+        <div class="preview-meta">
+          <div>
+            <small>السعر</small>
+            <strong>{{ card.price }} ريال</strong>
+          </div>
+        </div>
+        <p>{{ card.reason }}</p>
+      </div>
+      <span class="rank-badge">{{ card.rank }}</span>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
