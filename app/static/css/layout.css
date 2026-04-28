@@ -1,0 +1,103 @@
+.hero-card,
+.panel,
+.stat-card,
+.selector-box,
+.preview-card,
+.recommendation-card,
+.meta-box {
+  background: rgba(255, 253, 249, 0.94);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.hero-card {
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  align-items: center;
+  gap: 24px;
+}
+
+.hero-home h1,
+.hero-recommendations h1 {
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.15;
+  margin: 0 0 14px;
+  max-width: 14ch;
+}
+
+.hero-text,
+.preview-main,
+.recommendation-main,
+.recommendation-top > div {
+  min-width: 0;
+}
+
+.lead,
+.card-note,
+.clean-list {
+  line-height: 1.95;
+}
+
+.lead {
+  margin: 0;
+  color: var(--muted);
+  max-width: 62ch;
+  font-size: 1rem;
+}
+
+.stats-grid,
+.panel-grid,
+.preview-grid,
+.overview-grid,
+.metric-stack,
+.summary-list,
+.recommendation-list {
+  display: grid;
+}
+
+.stats-grid,
+.panel-grid,
+.preview-grid,
+.overview-grid {
+  gap: 16px;
+}
+
+.stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.two-columns,
+.overview-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.preview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.preview-grid,
+.metric-stack,
+.summary-list,
+.recommendation-list {
+  gap: 14px;
+}
+
+.overview-grid {
+  align-items: stretch;
+}
+
+.panel {
+  border-radius: var(--radius-xl);
+  padding: 28px;
+}
+
+.panel-tight {
+  padding: 24px;
+}
+
+.clean-list {
+  margin: 0;
+  padding-right: 18px;
+}

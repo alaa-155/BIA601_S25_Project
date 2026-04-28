@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero-card hero-recommendations">
+  <div class="hero-text">
+    <span class="eyebrow">التوصيات</span>
+    <h1>أفضل 5 توصيات للمستخدم {{ user_id }}</h1>
+    <p class="lead">
+      تعرض هذه الصفحة المنتجات المقترحة بعد التحسين بالخوارزمية الجينية مع الفئة والسعر وسبب مختصر لكل توصية.
+    </p>
+  </div>
+
+  <form action="/recommendations" method="get" class="selector-box">
+    <label for="user_id">تغيير رقم المستخدم</label>
+    <div class="selector-row">
+      <input type="number" id="user_id" name="user_id" value="{{ user_id }}" min="1" max="{{ summary.users_count }}">
+      <button type="submit" class="btn">عرض التوصيات</button>
+    </div>
+    <small>النطاق المتاح من 1 إلى {{ summary.users_count }}</small>
+  </form>
+</section>
+
+<section class="overview-grid">
+  <article class="panel panel-tight">
+    <span class="eyebrow">ملخص المستخدم</span>
+    <h2>البيانات الأساسية</h2>
+    <div class="summary-list">
+      <div class="summary-row">
+        <span>رقم المستخدم</span>
+        <strong>{{ payload.profile.user_id }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>العمر</span>
+        <strong>{{ payload.profile.age }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>الدولة</span>
+        <strong>{{ payload.profile.country }}</strong>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel panel-tight">
+    <span class="eyebrow">الفئات الأقرب</span>
+    <h2>الفئات الظاهرة داخل القائمة</h2>
+    <div class="tag-list">
+      {% for item in payload.categories %}
+      <span>{{ item }}</span>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">القائمة النهائية</span>
+      <h2>المنتجات المقترحة</h2>
+    </div>
+  </div>
+
+  <div class="recommendation-list">
+    {% for row in payload.recommendations %}
+    <article class="recommendation-card">
+      <div class="recommendation-main">
+        <div class="recommendation-top">
+          <div>
+            <h3>المنتج {{ row.product_id }}</h3>
+            <p class="card-note">{{ row.reason }}</p>
+          </div>
+          <span class="category-badge">{{ row.category }}</span>
+        </div>
+
+        <div class="recommendation-meta">
+          <div class="meta-box">
+            <small>الفئة</small>
+            <strong>{{ row.category }}</strong>
+          </div>
+          <div class="meta-box">
+            <small>السعر</small>
+            <strong>{{ row.price }} ريال</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="rank-column">
+        <small>الترتيب</small>
+        <span class="rank-badge">{{ row.rank }}</span>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

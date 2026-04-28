@@ -1,0 +1,89 @@
+@media (max-width: 1080px) {
+  .hero-card,
+  .stats-grid,
+  .preview-grid,
+  .panel-grid,
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-home h1,
+  .hero-recommendations h1 {
+    max-width: none;
+  }
+
+  .recommendation-card {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-column {
+    grid-auto-flow: column;
+    justify-content: space-between;
+    justify-items: stretch;
+    align-items: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    width: min(calc(100% - 20px), var(--max));
+  }
+
+  .page-content {
+    padding: 22px 0 34px;
+    gap: 18px;
+  }
+
+  .header-inner,
+  .selector-row,
+  .section-head,
+  .recommendation-top,
+  .summary-row,
+  .metric-topline,
+  .metric-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .site-header {
+    position: static;
+  }
+
+  .site-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .brand {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .brand strong {
+    font-size: 0.95rem;
+  }
+
+  .hero-card,
+  .panel,
+  .selector-box,
+  .stat-card,
+  .preview-card,
+  .recommendation-card {
+    padding: 18px;
+  }
+
+  .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .recommendation-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-column {
+    grid-auto-flow: row;
+    justify-content: center;
+    justify-items: center;
+  }
+}
