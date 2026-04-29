@@ -5,7 +5,8 @@ import pandas as pd
 
 from pipeline.config import CANDIDATE_POOL, EVAL_SAMPLE_USERS, TOP_K
 
-
+# Evaluate the recommendation system by comparing the baseline list
+# with the genetically optimized recommendation list.
 def evaluate(self, eval_users: int = EVAL_SAMPLE_USERS) -> dict[str, float]:
     train, holdout_pairs = _split_holdout(self.prepared.interactions.copy(), eval_users)
     profiles = self._build_profiles(train)
@@ -25,7 +26,8 @@ def evaluate(self, eval_users: int = EVAL_SAMPLE_USERS) -> dict[str, float]:
         "ga_diversity_at_10": round(float(np.mean(totals["ga_diversity"])), 4),
     }
 
-
+# Train the recommender on the full dataset and export final recommendations.
+# This function is used after evaluation to generate the results shown in the web app.
 def train_full_and_export(self) -> tuple[dict[str, object], pd.DataFrame]:
     profiles = self._build_profiles(self.prepared.interactions)
     rows: list[dict[str, object]] = []
@@ -36,10 +38,13 @@ def train_full_and_export(self) -> tuple[dict[str, object], pd.DataFrame]:
     recommendations["price"] = recommendations["price"].round(2)
     return profiles, recommendations
 
-
+# Split the interaction data using a hold-out strategy.
+# For each selected user, one positive product is hidden for testing.
 def _split_holdout(interactions: pd.DataFrame, eval_users: int) -> tuple[pd.DataFrame, list[tuple[int, int]]]:
     train = interactions.copy()
     holdout_pairs: list[tuple[int, int]] = []
+    # Keep only positive interactions because they represent products
+    # the user clicked, purchased, or rated highly.
     positive = interactions[interactions["positive"] == 1]
     for user_id, group in positive.groupby("user_id"):
         if len(group) < 2:
@@ -49,24 +54,28 @@ def _split_holdout(interactions: pd.DataFrame, eval_users: int) -> tuple[pd.Data
         train = train[~((train["user_id"] == user_id) & (train["product_id"] == row["product_id"]))]
     return train, holdout_pairs[:eval_users]
 
-
+# Update evaluation metrics for one user's recommendation result.
+# The metrics compare the baseline list with the genetic algorithm list.
 def _update_metrics(self, user_id: int, true_product_id: int, profiles: dict[str, object], totals: dict[str, object]) -> None:
     payload = self._candidate_payload(user_id, profiles)
     candidate_ids = payload["candidate_ids"]
     candidate_hybrid = payload["candidate_hybrid"]
     score_parts = payload["score_parts"]
+    # Build the baseline recommendation list using the highest hybrid scores.
     base_ids = candidate_ids[:TOP_K]
     pool_ids = candidate_ids[:CANDIDATE_POOL]
     pool_scores = candidate_hybrid[:CANDIDATE_POOL]
     pool_indices = np.array([self.prepared.p2i[item] for item in pool_ids])
+    # Build the optimized recommendation list using the genetic algorithm.
     ga_ids = self._ga_select(pool_ids, pool_scores, self.prod_cat_idx[pool_indices], score_parts["popularity"][pool_indices], k=TOP_K)
-
+    # Measure how many different product categories appear in each recommendation list.
     totals["base_diversity"].append(len(set(self.prod_category[[self.prepared.p2i[item] for item in base_ids]])) / TOP_K)
     totals["ga_diversity"].append(len(set(self.prod_category[[self.prepared.p2i[item] for item in ga_ids]])) / TOP_K)
     _update_hit_counts(base_ids, true_product_id, totals, "base")
     _update_hit_counts(ga_ids, true_product_id, totals, "ga")
-
-
+    
+# Count whether the hidden test product appears in the recommendation list.
+# NDCG gives more credit when the correct product appears near the top.
 def _update_hit_counts(predictions: np.ndarray, true_product_id: int, totals: dict[str, object], prefix: str) -> None:
     if true_product_id not in predictions:
         return
